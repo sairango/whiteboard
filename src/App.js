@@ -1,8 +1,13 @@
-
+import BoardProvider from "./store/BoardProvider";
+import Board from "./components/Board";
+import Toolbar from "./components/Toolbar";
 
 function App() {
   return (
-    <div>Hello From Whiteboard</div>
+    <BoardProvider>
+      <Board />
+      <Toolbar />
+    </BoardProvider>
   );
 }
 
