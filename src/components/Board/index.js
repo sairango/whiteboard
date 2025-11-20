@@ -1,36 +1,63 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import rough from "roughjs";
+import boardContext from "../../store/board-context";
+import { TOOL_ACTION_TYPES } from "../../constants";
 
 function Board() {
   const canvasRef = useRef();
+  const {
+    elements,
+    boardMouseDownHandler,
+    boardMouseMoveHandler,
+    boardMouseUpHandler,
+    toolActionType,
+  } = useContext(boardContext);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    
-    const roughCanvas = rough.canvas(canvas);
-    roughCanvas.line(60, 60, 400, 60, { strokeWidth: 5 });
-
-    roughCanvas.rectangle(100, 100, 200, 200);
-    roughCanvas.rectangle(140, 10, 100, 100, { fill: "red" });
-
-    
   }, []);
 
-  const handleBoardMouseDown = (event) => {
-    const clientX = event.clientX;
-    const clientY = event.clientY;
-    console.log(clientX , clientY);
-    
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.save();
 
-  }
-    
-    return (
-      <div>
-        <canvas ref={canvasRef} style={{ border: "1px solid grey" }} onMouseDown={handleBoardMouseDown}></canvas>
-      </div>
-    );
+    const roughCanvas = rough.canvas(canvas);
+
+    elements.forEach((element) => {
+      roughCanvas.draw(element.roughEle);
+    });
+
+    return () => {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+    };
+  }, [elements]);
+
+  const handleMouseDown = (event) => {
+    boardMouseDownHandler(event);
+  };
+
+  const handleMouseMove = (event) => {
+    if (toolActionType === TOOL_ACTION_TYPES.DRAWING) {
+      boardMouseMoveHandler(event);
+    }
+  };
+  const handleMouseUp = () => {
+    boardMouseUpHandler();
+  };
+
+  return (
+    <div>
+      <canvas
+        ref={canvasRef}
+        style={{ border: "1px solid grey" }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}></canvas>
+    </div>
+  );
 }
 
 export default Board;
