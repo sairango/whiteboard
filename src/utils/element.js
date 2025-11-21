@@ -1,5 +1,6 @@
-import { TOOL_ITEMS } from "../constants";
+import { ARROW_LENGTH, TOOL_ITEMS } from "../constants";
 import rough from "roughjs/bin/rough";
+import { getArrowHeadsCoordinates } from "./math";
 
 const gen = rough.generator();
 
@@ -23,6 +24,46 @@ export const createRoughElement = (id, x1, y1, x2, y2, { type }) => {
     }
     case TOOL_ITEMS.RECTANGLE: {
       newElement.roughEle = gen.rectangle(x1, y1, x2 - x1, y2 - y1, options);
+      return newElement;
+    }
+    case TOOL_ITEMS.CIRCLE: {
+      const centreX = (x1 + x2) / 2;
+      const centreY = (y1 + y2) / 2;
+      const diameter = Math.hypot(x2 - x1, y2 - y1);
+      newElement.roughEle = gen.circle(centreX, centreY, diameter, options);
+      return newElement;
+    }
+
+    case TOOL_ITEMS.ELLIPSE: {
+      const centreX = (x1 + x2) / 2;
+      const centreY = (y1 + y2) / 2;
+      const width = x2 - x1;
+      const height = y2 - y1;
+      newElement.roughEle = gen.ellipse(
+        centreX,
+        centreY,
+        width,
+        height,
+        options
+      );
+      return newElement;
+    }
+    case TOOL_ITEMS.ARROW: {
+      const { x3, y3, x4, y4 } = getArrowHeadsCoordinates(
+        x1,
+        y1,
+        x2,
+        y2,
+        ARROW_LENGTH
+      );
+      const points = [
+        [x1, y1],
+        [x2, y2],
+        [x3, y3],
+        [x2, y2],
+        [x4, y4],
+      ];
+      newElement.roughEle = gen.linearPath(points, options);
       return newElement;
     }
     default: {

@@ -1,10 +1,10 @@
 import React, { useReducer } from "react";
-import rough from "roughjs/bin/rough";
+//import rough from "roughjs/bin/rough";
 import { BOARD_ACTIONS, TOOL_ITEMS, TOOL_ACTION_TYPES } from "../constants";
 import boardContext from "./board-context";
 import { createRoughElement } from "../utils/element";
 
-const gen = rough.generator();
+//const gen = rough.generator();
 const boardReducer = (state, action) => {
   switch (action.type) {
     case BOARD_ACTIONS.CHANGE_TOOL: {
@@ -13,6 +13,7 @@ const boardReducer = (state, action) => {
         activeToolItem: action.payload.tool,
       };
     }
+
     case BOARD_ACTIONS.DRAW_DOWN: {
       const { clientX, clientY } = action.payload;
       const newElement = createRoughElement(
@@ -31,6 +32,7 @@ const boardReducer = (state, action) => {
         elements: [...prevElement, newElement],
       };
     }
+      
     case BOARD_ACTIONS.DRAW_MOVE: {
       const { clientX, clientY } = action.payload;
       const newElements = [...state.elements];
@@ -48,6 +50,7 @@ const boardReducer = (state, action) => {
         elements: newElements,
       };
     }
+      
     case BOARD_ACTIONS.DRAW_UP: {
       return {
         ...state,

@@ -3,6 +3,7 @@ export const TOOL_ITEMS = {
   LINE: "LINE",
   RECTANGLE: "RECTANGLE",
   CIRCLE: "CIRCLE",
+  ELLIPSE:"ELLIPSE",
   ARROW: "ARROW",
   ERASER: "ERASER",
   TEXT: "TEXT",
@@ -26,3 +27,5 @@ export const TOOL_ACTION_TYPES = {
   ERASING: "ERASING",
   WRITING: "WRITING",
 };
+
+export const ARROW_LENGTH = 20;
