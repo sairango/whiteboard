@@ -1,7 +1,12 @@
 import { useContext } from "react";
 import classes from "./index.module.css";
 import cx from "classnames";
-import { FaSlash, FaRegCircle , FaArrowRight } from "react-icons/fa";
+import {
+  FaSlash,
+  FaRegCircle,
+  FaArrowRight,
+  FaPaintBrush,
+} from "react-icons/fa";
 import { LuRectangleHorizontal } from "react-icons/lu";
 import { TbOvalVertical } from "react-icons/tb";
 import { TOOL_ITEMS } from "../../constants";
@@ -60,6 +65,15 @@ function Toolbar() {
           changeToolHandler(TOOL_ITEMS.ARROW);
         }}>
         <FaArrowRight />
+      </div>
+      <div
+        className={cx(classes.toolItem, {
+          [classes.active]: activeToolItem === TOOL_ITEMS.BRUSH,
+        })}
+        onClick={() => {
+          changeToolHandler(TOOL_ITEMS.BRUSH);
+        }}>
+        <FaPaintBrush />
       </div>
     </div>
   );

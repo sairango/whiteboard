@@ -26,6 +26,9 @@ const toolboxReducer = (state, action) => {
 };
 
 const initialToolboxState = {
+  [TOOL_ITEMS.BRUSH]: {
+    stroke: COLORS.BLACK,
+  },
   [TOOL_ITEMS.LINE]: {
     stroke: COLORS.BLACK,
     size: 1,
@@ -77,7 +80,7 @@ const ToolboxProvider = ({ children }) => {
     });
   };
 
-  const changeSizeHandler = ( tool,size) => {
+  const changeSizeHandler = (tool, size) => {
     dispatchToolboxAction({
       type: TOOLBOX_ACTIONS.CHANGE_SIZE,
       payload: {

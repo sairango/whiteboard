@@ -3,6 +3,8 @@ import React, { useReducer } from "react";
 import { BOARD_ACTIONS, TOOL_ITEMS, TOOL_ACTION_TYPES } from "../constants";
 import boardContext from "./board-context";
 import { createRoughElement } from "../utils/element";
+import { getSvgPathFromStroke } from "../utils/element";
+import getStroke from "perfect-freehand";
 
 //const gen = rough.generator();
 const boardReducer = (state, action) => {
@@ -37,21 +39,47 @@ const boardReducer = (state, action) => {
       const { clientX, clientY } = action.payload;
       const newElements = [...state.elements];
       const index = state.elements.length - 1;
-      const { x1, y1, stroke, fill, size } = newElements[index];
+      const { type } = newElements[index];
 
-      const newElement = createRoughElement(index, x1, y1, clientX, clientY, {
-        type: state.activeToolItem,
-        stroke,
-        fill,
-        size,
-      });
+      switch (type) {
+        case TOOL_ITEMS.ARROW:
+        case TOOL_ITEMS.CIRCLE:
+        case TOOL_ITEMS.RECTANGLE:
+        case TOOL_ITEMS.LINE:
+        case TOOL_ITEMS.ELLIPSE:
+          const { x1, y1, stroke, fill, size } = newElements[index];
+          const newElement = createRoughElement(
+            index,
+            x1,
+            y1,
+            clientX,
+            clientY,
+            {
+              type: state.activeToolItem,
+              stroke,
+              fill,
+              size,
+            }
+          );
 
-      newElements[index] = newElement;
+          newElements[index] = newElement;
 
-      return {
-        ...state,
-        elements: newElements,
-      };
+          return {
+            ...state,
+            elements: newElements,
+          };
+        case TOOL_ITEMS.BRUSH:
+          newElements[index].points = [
+            ...newElements[index].points,
+            { x: clientX, y: clientY },
+          ];
+          newElements[index].path = new Path2D(
+            getSvgPathFromStroke(getStroke(newElements[index].points))
+          );
+          return { ...state, elements: newElements };
+        default:
+          return state;
+      }
     }
 
     case BOARD_ACTIONS.DRAW_UP: {
