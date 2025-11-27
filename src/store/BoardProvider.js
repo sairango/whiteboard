@@ -15,14 +15,14 @@ const boardReducer = (state, action) => {
     }
 
     case BOARD_ACTIONS.DRAW_DOWN: {
-      const { clientX, clientY } = action.payload;
+      const { clientX, clientY, stroke, fill, size } = action.payload;
       const newElement = createRoughElement(
         state.elements.length,
         clientX,
         clientY,
         clientX,
         clientY,
-        { type: state.activeToolItem }
+        { type: state.activeToolItem, stroke, fill, size }
       );
 
       const prevElement = state.elements;
@@ -32,15 +32,18 @@ const boardReducer = (state, action) => {
         elements: [...prevElement, newElement],
       };
     }
-      
+
     case BOARD_ACTIONS.DRAW_MOVE: {
       const { clientX, clientY } = action.payload;
       const newElements = [...state.elements];
       const index = state.elements.length - 1;
-      const { x1, y1 } = newElements[index];
+      const { x1, y1, stroke, fill, size } = newElements[index];
 
       const newElement = createRoughElement(index, x1, y1, clientX, clientY, {
         type: state.activeToolItem,
+        stroke,
+        fill,
+        size,
       });
 
       newElements[index] = newElement;
@@ -50,7 +53,7 @@ const boardReducer = (state, action) => {
         elements: newElements,
       };
     }
-      
+
     case BOARD_ACTIONS.DRAW_UP: {
       return {
         ...state,
@@ -81,15 +84,17 @@ const BoardProvider = ({ children }) => {
     });
   };
 
-  const boardMouseDownHandler = (event) => {
+  const boardMouseDownHandler = (event, toolboxState) => {
     const { clientX, clientY } = event;
-    //const roughEle = gen.line(clientX, clientY, clientX, clientY);
 
     dispatchBoardAction({
       type: BOARD_ACTIONS.DRAW_DOWN,
       payload: {
         clientX,
         clientY,
+        stroke: toolboxState[boardState.activeToolItem]?.stroke,
+        fill: toolboxState[boardState.activeToolItem]?.fill,
+        size: toolboxState[boardState.activeToolItem]?.size,
       },
     });
   };
