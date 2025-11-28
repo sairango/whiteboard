@@ -6,6 +6,7 @@ import {
   FaRegCircle,
   FaArrowRight,
   FaPaintBrush,
+  FaEraser,
 } from "react-icons/fa";
 import { LuRectangleHorizontal } from "react-icons/lu";
 import { TbOvalVertical } from "react-icons/tb";
@@ -74,6 +75,15 @@ function Toolbar() {
           changeToolHandler(TOOL_ITEMS.BRUSH);
         }}>
         <FaPaintBrush />
+      </div>
+      <div
+        className={cx(classes.toolItem, {
+          [classes.active]: activeToolItem === TOOL_ITEMS.ERASER,
+        })}
+        onClick={() => {
+          changeToolHandler(TOOL_ITEMS.ERASER);
+        }}>
+        <FaEraser />
       </div>
     </div>
   );
