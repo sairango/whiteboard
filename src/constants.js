@@ -43,7 +43,6 @@ export const TOOLBOX_ACTIONS = {
   CHANGE_FILL: "CHANGE_FILL",
   CHANGE_SIZE: "CHANGE_SIZE",
 };
-export const ARROW_LENGTH = 20;
 
 export const FILL_TOOL_TYPES = [
   TOOL_ITEMS.RECTANGLE,
@@ -68,3 +67,6 @@ export const SIZE_TOOL_TYPES = [
   TOOL_ITEMS.TEXT,
   TOOL_ITEMS.ELLIPSE,
 ];
+
+export const ARROW_LENGTH = 20;
+export const ELEMENT_ERASE_THRESHOLD = 0.1;

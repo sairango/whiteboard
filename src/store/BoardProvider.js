@@ -140,9 +140,9 @@ const BoardProvider = ({ children }) => {
 
     if (boardState.activeToolItem === TOOL_ITEMS.ERASER) {
       dispatchBoardAction({
-        type: BOARD_ACTIONS.ERASE,
+        type: BOARD_ACTIONS.CHANGE_ACTION_TYPE,
         payload: {
-          actionType: TOOL_ACTION_TYPES.NONE,
+          actionType: TOOL_ACTION_TYPES.ERASING,
         },
       });
       return;
