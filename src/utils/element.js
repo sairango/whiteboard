@@ -5,7 +5,7 @@ import { getArrowHeadsCoordinates, isPointCloseToLine } from "./math";
 
 const gen = rough.generator();
 
-export const createRoughElement = (
+export const createElement = (
   id,
   x1,
   y1,
@@ -97,6 +97,10 @@ export const createRoughElement = (
         [x4, y4],
       ];
       newElement.roughEle = gen.linearPath(points, options);
+      return newElement;
+    }
+    case TOOL_ITEMS.TEXT: {
+      newElement.text = "";
       return newElement;
     }
     default: {

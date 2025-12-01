@@ -3,6 +3,7 @@ import {
   FILL_TOOL_TYPES,
   SIZE_TOOL_TYPES,
   STROKE_TOOL_TYPES,
+  TOOL_ITEMS,
 } from "../../constants";
 import classes from "./index.module.css";
 import { useContext } from "react";
@@ -60,12 +61,14 @@ const Toolbox = () => {
       )}
       {SIZE_TOOL_TYPES.includes(activeToolItem) && (
         <div className={classes.selectOptionContainer}>
-          <div className={classes.toolBoxLabel}>BRUSH SIZE</div>
+          <div className={classes.toolBoxLabel}>
+            {activeToolItem === TOOL_ITEMS.TEXT ? "FONT SIZE" : "BRUSH SIZE"}
+          </div>
           <input
             type="range"
             step={1}
-            min={1}
-            max={10}
+            min={activeToolItem === TOOL_ITEMS.TEXT ? 12 : 1}
+            max={activeToolItem === TOOL_ITEMS.TEXT ? 64 : 16}
             value={size}
             onChange={(event) =>
               changeSize(activeToolItem, event.target.value)

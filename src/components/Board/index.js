@@ -1,16 +1,20 @@
-import { useContext, useLayoutEffect, useRef } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef } from "react";
 import rough from "roughjs";
 import boardContext from "../../store/board-context";
-import { TOOL_ITEMS } from "../../constants";
+import { TOOL_ACTION_TYPES, TOOL_ITEMS } from "../../constants";
 import toolboxContext from "../../store/toolbar-context";
+import classes from "./index.module.css";
 
 function Board() {
   const canvasRef = useRef();
+  const textAreaRef = useRef();
   const {
     elements,
+    toolActionType,
     boardMouseDownHandler,
     boardMouseMoveHandler,
     boardMouseUpHandler,
+    textAreaBlurHandler,
   } = useContext(boardContext);
 
   const { toolboxState } = useContext(toolboxContext);
@@ -39,6 +43,13 @@ function Board() {
           context.fill(element.path);
           context.restore();
           break;
+        case TOOL_ITEMS.TEXT:
+          context.textBaseline = "top";
+          context.font = `${element.size}px Caveat`;
+          context.fillStyle = element.stroke;
+          context.fillText(element.text, element.x1, element.y1);
+          context.restore();
+          break;
         default:
           throw new Error("Type Not Recognized");
       }
@@ -48,6 +59,15 @@ function Board() {
       context.clearRect(0, 0, canvas.width, canvas.height);
     };
   }, [elements]);
+
+  useEffect(() => {
+    const textArea = textAreaRef.current;
+    if (toolActionType === TOOL_ACTION_TYPES.WRITING) {
+      setTimeout(() => {
+        textArea.focus();
+      }, 0);
+    }
+  }, [toolActionType]);
 
   const handleMouseDown = (event) => {
     boardMouseDownHandler(event, toolboxState);
@@ -62,6 +82,20 @@ function Board() {
 
   return (
     <div>
+      {toolActionType === TOOL_ACTION_TYPES.WRITING && (
+        <textarea
+          ref={textAreaRef}
+          className={classes.textElementBox}
+          type="text"
+          style={{
+            top: elements[elements.length - 1].y1,
+            left: elements[elements.length - 1].x1,
+            fontSize: `${elements[elements.length - 1]?.size}px`,
+            color: elements[elements.length - 1]?.stroke,
+          }}
+          onBlur={(event) => textAreaBlurHandler(event.target.value)}
+        />
+      )}
       <canvas
         id="canvas"
         ref={canvasRef}
