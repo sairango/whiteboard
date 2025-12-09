@@ -1,70 +1,129 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🧑‍🎨 Interactive Whiteboard Application  
+A fully-featured drawing/whiteboard web application built with **React**, **Canvas API**, **Rough.js**, and **Perfect Freehand**.  
+Users can draw shapes, free-hand brush strokes, arrows, text, erase elements, undo/redo actions, customize colors & sizes, and download the canvas as an image.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Live Demo  
+👉 **[Link to Deployed Project](https://whiteboard-two-puce.vercel.app/)**  
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## ✨ Features
 
-### `npm test`
+### 🎨 Drawing Tools
+- ✏️ **Brush** (Perfect Freehand smooth strokes)  
+- 📏 **Line**
+- ▭ **Rectangle** (Stroke + Fill)
+- ⚪ **Circle**
+- 🥚 **Ellipse**
+- ➡️ **Arrow**
+- 🔤 **Text Tool**
+- 🧹 **Eraser** (Smart shape-level erasing)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🧰 Toolbox
+- Stroke color picker  
+- Fill color picker (where applicable)  
+- Brush / Line / Font size slider  
+- Predefined color palette  
 
-### `npm run build`
+### 🔄 History Control
+- Undo  
+- Redo  
+- Keyboard shortcuts:  
+  - **Ctrl + Z → Undo**  
+  - **Ctrl + Y → Redo**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 📥 Export
+- Download the canvas as a **PNG** image.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🏗️ Project Architecture
 
-### `npm run eject`
+```text
+src/
+│── components/
+│   ├── Board/        → Canvas rendering & mouse events
+│   ├── Toolbar/      → Tools (line, brush, arrow, text...)
+│   └── Toolbox/      → Stroke/Fill/Size controls
+│
+│── store/
+│   ├── BoardProvider → Board state, history, drawing logic
+│   └── ToolboxProvider → Color & size configuration state
+│
+│── utils/
+│   ├── element.js    → Shape creation, brush paths, hit-testing
+│   └── math.js       → Arrow geometry, distance calculations
+│
+└── constants.js      → Tool types, colors, enums
+````
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠️ Technologies Used
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+| Technology           | Purpose                     |
+| -------------------- | --------------------------- |
+| **React**            | UI and state management     |
+| **Canvas API**       | Low-level drawing rendering |
+| **Rough.js**         | Sketch-style shapes         |
+| **Perfect Freehand** | Smooth brush strokes        |
+| **React Icons**      | Toolbar icons               |
+| **Tailwind CSS**     | Styling and layout          |
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 📦 Installation & Setup
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Clone the repository:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
 
-### Code Splitting
+Install dependencies:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm install
+```
 
-### Analyzing the Bundle Size
+Start development server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm start
+```
 
-### Making a Progressive Web App
+Build for production:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm run build
+```
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🧠 How It Works (Short Technical Summary)
 
-### Deployment
+* Every drawing action creates an **element object** containing coordinates, styles, and type.
+* **BoardProvider** stores the drawing elements array + undo/redo history.
+* Mouse events (`mousedown`, `mousemove`, `mouseup`) mutate the active element via reducers.
+* Rough.js creates sketch-style primitives for shapes.
+* Perfect Freehand generates brush strokes using SVG path conversion.
+* A floating `<textarea>` handles text input before saving to canvas.
+* Canvas is redrawn on every update using `useLayoutEffect`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## ⭐ Acknowledgements
+
+* [Rough.js](https://roughjs.com/)
+* [Perfect Freehand](https://perfect-freehand-example.vercel.app/)
+* Inspiration from digital whiteboard tools like Excalidraw.
+
+
+
